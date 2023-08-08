@@ -142,6 +142,8 @@
     <ClInclude Include="helpers.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LICENSE" />
+    <None Include="README.md" />
     <None Include="SDL2.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

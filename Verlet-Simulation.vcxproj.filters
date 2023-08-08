@@ -35,5 +35,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2.dll" />
+    <None Include="README.md">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="LICENSE" />
   </ItemGroup>
 </Project>

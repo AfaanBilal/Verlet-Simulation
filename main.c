@@ -35,7 +35,7 @@ int initialize_window(void) {
 	}
 
 	window = SDL_CreateWindow(
-		"Verlet Simulation",
+		"Verlet Simulation (https://afaan.dev)",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		WINDOW_WIDTH,
