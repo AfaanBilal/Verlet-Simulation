@@ -87,7 +87,7 @@ void update() {
 }
 
 void render() {
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(renderer, 112, 128, 144, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(renderer);
 
 	SDL_Rect ball_rect = {
@@ -96,7 +96,7 @@ void render() {
 		(int)ball.width,
 		(int)ball.height
 	};
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+	SDL_SetRenderDrawColor(renderer, 18, 20, 23, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, &ball_rect);
 
 	SDL_RenderPresent(renderer);
