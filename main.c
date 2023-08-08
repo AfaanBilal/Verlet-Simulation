@@ -143,13 +143,13 @@ void render() {
 	SDL_RenderFillRect(renderer, &anchor_r);
 
 	SDL_RenderDrawLineF(renderer,
-		rope.p1.x + anchor.size.width / 2,
-		rope.p1.y + anchor.size.height / 2,
-		rope.p2.x + pendulum.size.width / 2,
-		rope.p2.y + pendulum.size.height / 2
+		rope.p1.x + anchor.size.width / 2.0f,
+		rope.p1.y + anchor.size.height / 2.0f,
+		rope.p2.x + pendulum.size.width / 2.0f,
+		rope.p2.y + pendulum.size.height / 2.0f
 	);
 
-	DrawCircle(renderer, pendulum.pos.x + pendulum.size.width / 2, pendulum.pos.y + pendulum.size.height / 2, pendulum.radius);
+	DrawCircle(renderer, pendulum.pos.x + pendulum.size.width / 2.0f, pendulum.pos.y + pendulum.size.height / 2.0f, pendulum.radius);
 
 	SDL_RenderPresent(renderer);
 }

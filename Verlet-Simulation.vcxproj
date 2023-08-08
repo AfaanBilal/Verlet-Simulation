@@ -133,11 +133,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="helpers.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="definitions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h" />
+    <ClInclude Include="helpers.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SDL2.dll" />

@@ -1,3 +1,4 @@
+#pragma once
 /**
  * Verlet Simulation of a Simple Pendulum
  *

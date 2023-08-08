@@ -21,9 +21,15 @@
     <ClCompile Include="definitions.h">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="helpers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helpers.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
