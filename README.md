@@ -8,7 +8,7 @@ Author: **[Afaan Bilal](https://afaan.dev)**
 
 ---
 
-## Screenshots
+## Simulation
 
 ![Verlet Simulation](assets/verlet-simulation.gif)
 
