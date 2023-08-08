@@ -18,7 +18,7 @@ struct ball {
 
 int initialize_window(void) {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		fprintf(stderr, "E0001: Error initializing SDL.\n");
+		fprintf(stderr, ERROR_INITIALIZING_SDL);
 		return FALSE;
 	}
 
@@ -31,13 +31,13 @@ int initialize_window(void) {
 		0
 	);
 	if (!window) {
-		fprintf(stderr, "E0002: Error creating window. \n");
+		fprintf(stderr, ERROR_CREATING_WINDOW);
 		return FALSE;
 	}
 
 	renderer = SDL_CreateRenderer(window, -1, 0);
 	if (!renderer) {
-		fprintf(stderr, "E0003: Error creating renderer. \n");
+		fprintf(stderr, ERROR_CREATING_RENDERER);
 		return FALSE;
 	}
 
@@ -104,6 +104,7 @@ void render() {
 
 int main(int argc, char* args[]) {
 	printf("Simulation starting...");
+	printf("(c) Afaan Bilal (https://afaan.dev)");
 
 	simulation_running = initialize_window();
 
