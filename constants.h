@@ -1,4 +1,10 @@
 #pragma once
+/**
+ * Verlet Simulation of a Simple Pendulum
+ *
+ * @author Afaan Bilal
+ * @link   https://afaan.dev
+ */
 
 #define TRUE  1
 #define FALSE 0
@@ -12,3 +18,5 @@
 
 #define FPS 60
 #define FRAME_TARGET_TIME (1000 / FPS)
+
+#define GRAVITY 400

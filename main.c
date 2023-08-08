@@ -1,7 +1,17 @@
+/**
+ * Verlet Simulation of a Simple Pendulum
+ * 
+ * @author Afaan Bilal
+ * @link   https://afaan.dev
+ */
+
 #include <stdio.h>
 #include <SDL.h>
+#include <math.h>
 
 #include "constants.h"
+#include "definitions.h"
+#include "helpers.h"
 
 int simulation_running = FALSE;
 SDL_Window* window;
@@ -9,12 +19,14 @@ SDL_Renderer* renderer;
 
 Uint64 last_frame_time = 0;
 
-struct ball {
-	float x;
-	float y;
-	float width;
-	float height;
-} ball;
+Rect anchor = { { WINDOW_WIDTH / 2 - 5, WINDOW_HEIGHT / 2 - 300 }, { 10, 10 } };
+Rope rope;
+Pendulum pendulum = {
+	{ WINDOW_WIDTH / 2 + 300, WINDOW_HEIGHT / 2 + 200 },
+	{ WINDOW_WIDTH / 2 + 300, WINDOW_HEIGHT / 2 + 200 },
+	{ 20, 20 },
+	20
+};
 
 int initialize_window(void) {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -67,10 +79,25 @@ void process_input() {
 }
 
 void setup() {
-	ball.x = 20;
-	ball.y = 20;
-	ball.width = 15;
-	ball.height = 15;
+	rope.p1 = anchor.pos;
+	rope.p2 = pendulum.pos;
+	rope.length = distance(anchor.pos, pendulum.pos);
+}
+
+void maintainRopeLength() {
+	float dx = rope.p1.x - rope.p2.x;
+	float dy = rope.p1.y - rope.p2.y;
+
+	float dist = sqrt(dx * dx + dy * dy);
+	float diff = rope.length - dist;
+
+	float percent = (diff / dist) / 2;
+
+	float offset_x = dx * percent;
+	float offset_y = dy * percent;
+
+	rope.p2.x -= offset_x;
+	rope.p2.y -= offset_y;
 }
 
 void update() {
@@ -82,28 +109,53 @@ void update() {
 
 	float delta_time = (SDL_GetTicks64() - last_frame_time) / 1000.0f;
 
-	ball.x += 20 * delta_time;
-	ball.y += 10 * delta_time;
+	float vel_x = pendulum.pos.x - pendulum.pos_old.x;
+	float vel_y = pendulum.pos.y - pendulum.pos_old.y;
+
+	pendulum.pos_old.x = pendulum.pos.x;
+	pendulum.pos_old.y = pendulum.pos.y;
+
+	float acc_x = 0;
+	float acc_y = GRAVITY;
+
+	rope.p2.x += vel_x + acc_x * delta_time * delta_time;
+	rope.p2.y += vel_y + acc_y * delta_time * delta_time;
+
+	maintainRopeLength();
+
+	pendulum.pos.x = rope.p2.x;
+	pendulum.pos.y = rope.p2.y;
 }
 
 void render() {
 	SDL_SetRenderDrawColor(renderer, 112, 128, 144, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(renderer);
 
-	SDL_Rect ball_rect = {
-		(int)ball.x,
-		(int)ball.y,
-		(int)ball.width,
-		(int)ball.height
+	SDL_SetRenderDrawColor(renderer, 20, 20, 20, SDL_ALPHA_OPAQUE);
+
+	SDL_Rect anchor_r = {
+		(int)anchor.pos.x,
+		(int)anchor.pos.y,
+		(int)anchor.size.width,
+		(int)anchor.size.height
 	};
-	SDL_SetRenderDrawColor(renderer, 18, 20, 23, SDL_ALPHA_OPAQUE);
-	SDL_RenderFillRect(renderer, &ball_rect);
+	
+	SDL_RenderFillRect(renderer, &anchor_r);
+
+	SDL_RenderDrawLineF(renderer,
+		rope.p1.x + anchor.size.width / 2,
+		rope.p1.y + anchor.size.height / 2,
+		rope.p2.x + pendulum.size.width / 2,
+		rope.p2.y + pendulum.size.height / 2
+	);
+
+	DrawCircle(renderer, pendulum.pos.x + pendulum.size.width / 2, pendulum.pos.y + pendulum.size.height / 2, pendulum.radius);
 
 	SDL_RenderPresent(renderer);
 }
 
 int main(int argc, char* args[]) {
-	printf("Simulation starting...");
+	printf("Simulation starting...\n");
 	printf("(c) Afaan Bilal (https://afaan.dev)");
 
 	simulation_running = initialize_window();
