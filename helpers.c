@@ -16,39 +16,17 @@ float distance(Vec2 p1, Vec2 p2) {
 	return sqrt(x * x + y * y);
 }
 
-void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius) {
-	const int32_t diameter = (radius * 2);
+void DrawCircle(SDL_Renderer* renderer, int x, int y, int radius) {
+	int diameter = radius * 2;
+	int r2 = radius * radius;
+	for (int w = 0; w < diameter; w++) {
+		for (int h = 0; h < diameter; h++) {
+			int dx = radius - w;
+			int dy = radius - h;
 
-	int32_t x = (radius - 1);
-	int32_t y = 0;
-	int32_t tx = 1;
-	int32_t ty = 1;
-	int32_t error = (tx - diameter);
-
-	while (x >= y)
-	{
-		//  Each of the following renders an octant of the circle
-		SDL_RenderDrawPoint(renderer, centreX + x, centreY - y);
-		SDL_RenderDrawPoint(renderer, centreX + x, centreY + y);
-		SDL_RenderDrawPoint(renderer, centreX - x, centreY - y);
-		SDL_RenderDrawPoint(renderer, centreX - x, centreY + y);
-		SDL_RenderDrawPoint(renderer, centreX + y, centreY - x);
-		SDL_RenderDrawPoint(renderer, centreX + y, centreY + x);
-		SDL_RenderDrawPoint(renderer, centreX - y, centreY - x);
-		SDL_RenderDrawPoint(renderer, centreX - y, centreY + x);
-
-		if (error <= 0)
-		{
-			++y;
-			error += ty;
-			ty += 2;
-		}
-
-		if (error > 0)
-		{
-			--x;
-			tx += 2;
-			error += (tx - diameter);
+			if ((dx * dx + dy * dy) <= r2) {
+				SDL_RenderDrawPoint(renderer, x + dx, y + dy);
+			}
 		}
 	}
 }
