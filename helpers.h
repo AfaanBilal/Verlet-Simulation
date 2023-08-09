@@ -1,6 +1,6 @@
 #pragma once
 /**
- * Verlet Simulation of a Simple Pendulum
+ * Verlet Simulation of a Double Pendulum
  *
  * @author Afaan Bilal
  * @link   https://afaan.dev

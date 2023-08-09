@@ -1,6 +1,6 @@
 /**
- * Verlet Simulation of a Simple Pendulum
- * 
+ * Verlet Simulation of a Double Pendulum
+ *
  * @author Afaan Bilal
  * @link   https://afaan.dev
  */
@@ -22,6 +22,13 @@ Uint64 last_frame_time = 0;
 Rect anchor = { { WINDOW_WIDTH / 2 - 5, WINDOW_HEIGHT / 2 - 300 }, { 10, 10 } };
 Rope rope;
 Pendulum pendulum = {
+	{ WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2 - 50 },
+	{ WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2 - 50 },
+	{ 20, 20 },
+	20
+};
+Rope rope2;
+Pendulum pendulum2 = {
 	{ WINDOW_WIDTH / 2 + 300, WINDOW_HEIGHT / 2 + 200 },
 	{ WINDOW_WIDTH / 2 + 300, WINDOW_HEIGHT / 2 + 200 },
 	{ 20, 20 },
@@ -81,7 +88,11 @@ void process_input() {
 void setup() {
 	rope.p1 = anchor.pos;
 	rope.p2 = pendulum.pos;
-	rope.length = distance(anchor.pos, pendulum.pos);
+	rope.length = distance(rope.p1, rope.p2);
+
+	rope2.p1 = pendulum.pos;
+	rope2.p2 = pendulum2.pos;
+	rope2.length = distance(rope2.p1, rope2.p2);
 }
 
 void maintainRopeLength() {
@@ -100,6 +111,22 @@ void maintainRopeLength() {
 	rope.p2.y -= offset_y;
 }
 
+void maintainRope2Length() {
+	float dx = rope2.p1.x - rope2.p2.x;
+	float dy = rope2.p1.y - rope2.p2.y;
+
+	float dist = sqrt(dx * dx + dy * dy);
+	float diff = rope2.length - dist;
+
+	float percent = (diff / dist) / 2;
+
+	float offset_x = dx * percent;
+	float offset_y = dy * percent;
+
+	rope2.p2.x -= offset_x;
+	rope2.p2.y -= offset_y;
+}
+
 void update() {
 	last_frame_time = SDL_GetTicks64();
 	int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks64() - last_frame_time);
@@ -109,14 +136,14 @@ void update() {
 
 	float delta_time = (SDL_GetTicks64() - last_frame_time) / 1000.0f;
 
+	float acc_x = 0;
+	float acc_y = GRAVITY;
+
 	float vel_x = pendulum.pos.x - pendulum.pos_old.x;
 	float vel_y = pendulum.pos.y - pendulum.pos_old.y;
 
 	pendulum.pos_old.x = pendulum.pos.x;
 	pendulum.pos_old.y = pendulum.pos.y;
-
-	float acc_x = 0;
-	float acc_y = GRAVITY;
 
 	rope.p2.x += vel_x + acc_x * delta_time * delta_time;
 	rope.p2.y += vel_y + acc_y * delta_time * delta_time;
@@ -125,6 +152,24 @@ void update() {
 
 	pendulum.pos.x = rope.p2.x;
 	pendulum.pos.y = rope.p2.y;
+
+	// Rope 2 (between Pendulum 1 and 2) - rigid
+	rope2.p1.x = rope.p2.x;
+	rope2.p1.y = rope.p2.y;
+
+	float vel2_x = pendulum2.pos.x - pendulum2.pos_old.x;
+	float vel2_y = pendulum2.pos.y - pendulum2.pos_old.y;
+
+	pendulum2.pos_old.x = pendulum2.pos.x;
+	pendulum2.pos_old.y = pendulum2.pos.y;
+
+	rope2.p2.x += vel2_x + acc_x * delta_time * delta_time;
+	rope2.p2.y += vel2_y + acc_y * delta_time * delta_time;
+
+	maintainRope2Length();
+
+	pendulum2.pos.x = rope2.p2.x;
+	pendulum2.pos.y = rope2.p2.y;
 }
 
 void render() {
@@ -139,7 +184,7 @@ void render() {
 		(int)anchor.size.width,
 		(int)anchor.size.height
 	};
-	
+
 	SDL_RenderFillRect(renderer, &anchor_r);
 
 	SDL_RenderDrawLineF(renderer,
@@ -150,6 +195,15 @@ void render() {
 	);
 
 	DrawCircle(renderer, pendulum.pos.x + pendulum.size.width / 2.0f, pendulum.pos.y + pendulum.size.height / 2.0f, pendulum.radius);
+
+	SDL_RenderDrawLineF(renderer,
+		rope2.p1.x + pendulum.size.width / 2.0f,
+		rope2.p1.y + pendulum.size.height / 2.0f,
+		rope2.p2.x + pendulum2.size.width / 2.0f,
+		rope2.p2.y + pendulum2.size.height / 2.0f
+	);
+
+	DrawCircle(renderer, pendulum2.pos.x + pendulum2.size.width / 2.0f, pendulum2.pos.y + pendulum2.size.height / 2.0f, pendulum2.radius);
 
 	SDL_RenderPresent(renderer);
 }

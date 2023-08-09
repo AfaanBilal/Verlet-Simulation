@@ -4,7 +4,7 @@ Verlet Simulation
 Author: **[Afaan Bilal](https://afaan.dev)**
 
 ## Introduction
-**Verlet Simulation** is a Simple Pendulum simulation using Verlet integration written in C using SDL.
+**Verlet Simulation** is a Double Pendulum simulation using Verlet integration written in C using SDL.
 
 ---
 
