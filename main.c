@@ -95,36 +95,20 @@ void setup() {
 	rope2.length = distance(rope2.p1, rope2.p2);
 }
 
-void maintainRopeLength() {
-	float dx = rope.p1.x - rope.p2.x;
-	float dy = rope.p1.y - rope.p2.y;
+void maintainRopeLength(Rope* rope) {
+	float dx = rope->p1.x - rope->p2.x;
+	float dy = rope->p1.y - rope->p2.y;
 
 	float dist = sqrt(dx * dx + dy * dy);
-	float diff = rope.length - dist;
+	float diff = rope->length - dist;
 
 	float percent = (diff / dist) / 2;
 
 	float offset_x = dx * percent;
 	float offset_y = dy * percent;
 
-	rope.p2.x -= offset_x;
-	rope.p2.y -= offset_y;
-}
-
-void maintainRope2Length() {
-	float dx = rope2.p1.x - rope2.p2.x;
-	float dy = rope2.p1.y - rope2.p2.y;
-
-	float dist = sqrt(dx * dx + dy * dy);
-	float diff = rope2.length - dist;
-
-	float percent = (diff / dist) / 2;
-
-	float offset_x = dx * percent;
-	float offset_y = dy * percent;
-
-	rope2.p2.x -= offset_x;
-	rope2.p2.y -= offset_y;
+	rope->p2.x -= offset_x;
+	rope->p2.y -= offset_y;
 }
 
 void update() {
@@ -148,7 +132,7 @@ void update() {
 	rope.p2.x += vel_x + acc_x * delta_time * delta_time;
 	rope.p2.y += vel_y + acc_y * delta_time * delta_time;
 
-	maintainRopeLength();
+	maintainRopeLength(&rope);
 
 	pendulum.pos.x = rope.p2.x;
 	pendulum.pos.y = rope.p2.y;
@@ -166,7 +150,7 @@ void update() {
 	rope2.p2.x += vel2_x + acc_x * delta_time * delta_time;
 	rope2.p2.y += vel2_y + acc_y * delta_time * delta_time;
 
-	maintainRope2Length();
+	maintainRopeLength(&rope2);
 
 	pendulum2.pos.x = rope2.p2.x;
 	pendulum2.pos.y = rope2.p2.y;
