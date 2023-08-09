@@ -16,8 +16,7 @@ float distance(Vec2 p1, Vec2 p2) {
 	return sqrt(x * x + y * y);
 }
 
-void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius)
-{
+void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius) {
 	const int32_t diameter = (radius * 2);
 
 	int32_t x = (radius - 1);
@@ -54,8 +53,7 @@ void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_
 	}
 }
 
-void DrawRope(SDL_Renderer* renderer, Rope rope, Size p1s, Size p2s) 
-{
+void DrawRope(SDL_Renderer* renderer, Rope rope, Size p1s, Size p2s) {
 	SDL_RenderDrawLineF(renderer,
 		rope.p1.x + p1s.width / 2.0f,
 		rope.p1.y + p1s.height / 2.0f,
@@ -64,7 +62,6 @@ void DrawRope(SDL_Renderer* renderer, Rope rope, Size p1s, Size p2s)
 	);
 }
 
-void DrawPendulum(SDL_Renderer* renderer, Pendulum pendulum)
-{
+void DrawPendulum(SDL_Renderer* renderer, Pendulum pendulum) {
 	DrawCircle(renderer, pendulum.pos.x + pendulum.size.width / 2.0f, pendulum.pos.y + pendulum.size.height / 2.0f, pendulum.radius);
 }
