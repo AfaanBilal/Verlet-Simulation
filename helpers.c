@@ -53,3 +53,18 @@ void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_
 		}
 	}
 }
+
+void DrawRope(SDL_Renderer* renderer, Rope rope, Size p1s, Size p2s) 
+{
+	SDL_RenderDrawLineF(renderer,
+		rope.p1.x + p1s.width / 2.0f,
+		rope.p1.y + p1s.height / 2.0f,
+		rope.p2.x + p2s.width / 2.0f,
+		rope.p2.y + p2s.height / 2.0f
+	);
+}
+
+void DrawPendulum(SDL_Renderer* renderer, Pendulum pendulum)
+{
+	DrawCircle(renderer, pendulum.pos.x + pendulum.size.width / 2.0f, pendulum.pos.y + pendulum.size.height / 2.0f, pendulum.radius);
+}
